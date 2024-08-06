@@ -1,0 +1,73 @@
+/* Basic styles for the recommendation system */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 22px);
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background: #333;
+    color: #fff;
+    border: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
+
+.results {
+    margin: 20px 0;
+}
+
+.results table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.results table, .results th, .results td {
+    border: 1px solid #ddd;
+}
+
+.results th, .results td {
+    padding: 8px;
+    text-align: left;
+}
+
+.results th {
+    background: #333;
+    color: #fff;
+}

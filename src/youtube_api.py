@@ -3,12 +3,10 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
 class YouTubeAPI:
     def __init__(self):
-        # Read API key from environment variable
         self.api_key = os.getenv('YOUTUBE_API_KEY')
         self.youtube = build('youtube', 'v3', developerKey=self.api_key)
 
@@ -34,9 +32,4 @@ class YouTubeAPI:
         
         return pd.DataFrame(videos)
 
-# Usage example:
-# Initialize API without passing the key directly
-# api = YouTubeAPI()
-# video_ids = ['Ks-_Mh1QhMc', 'dQw4w9WgXcQ']
-# video_df = api.get_video_details(video_ids)
-# print(video_df.head())
+

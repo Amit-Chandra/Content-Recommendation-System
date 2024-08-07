@@ -7,12 +7,10 @@ class Recommender:
         self.similarity_matrix = None
 
     def train_model(self):
-        # Assuming feature_data is a DataFrame with necessary features for recommendation
-        feature_data = self.df[['view_count', 'like_count', 'comment_count']]  # Example features
+        feature_data = self.df[['view_count', 'like_count', 'comment_count']]  
         self.similarity_matrix = cosine_similarity(feature_data)
 
     def get_recommendations(self, video_id, top_n=5):
-        # Find the index of the video_id in the DataFrame
         video_idx = self.df.index[self.df['video_id'] == video_id].tolist()
         if not video_idx:
             return []
@@ -20,7 +18,7 @@ class Recommender:
         video_idx = video_idx[0]
         similarity_scores = list(enumerate(self.similarity_matrix[video_idx]))
         similarity_scores = sorted(similarity_scores, key=lambda x: x[1], reverse=True)
-        similarity_scores = similarity_scores[1:top_n+1]  # Exclude the video itself
+        similarity_scores = similarity_scores[1:top_n+1] 
         
         recommended_videos = []
         for idx, score in similarity_scores:
@@ -33,6 +31,5 @@ class Recommender:
         return recommended_videos
 
     def update_data(self, new_data):
-        # Append new data to the existing DataFrame
         self.df = pd.concat([self.df, new_data], ignore_index=True)
-        self.train_model()  # Retrain the model with the updated data
+        self.train_model() 

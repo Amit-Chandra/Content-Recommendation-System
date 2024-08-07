@@ -3,64 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Recommendation System</title>
+    <title>Content Recommendation System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header>
-        <h1>YouTube Recommendation System</h1>
-    </header>
     <div class="container">
-        <!-- <form id="recommendation-form">
-            <label for="video_id">Enter YouTube Video ID:</label>
-            <input type="text" id="video_id" name="video_id" placeholder="e.g., dQw4w9WgXcQ" required>
-            <input type="submit" value="Get Recommendations">
-        </form> -->
+        <h1>YouTube Video Recommendation System</h1>
         <form id="recommendation-form">
-            <label for="video_id">Enter YouTube Video ID:</label>
-            <input type="text" id="video_id" name="video_id" placeholder="e.g., dQw4w9WgXcQ" required>
-            <input type="submit" value="Get Recommendations">
+            <label for="video_ids">Enter YouTube Video IDs (comma separated):</label>
+            <input type="text" id="video_ids" name="video_ids" required>
+            
+            <label for="video_id">Enter a YouTube Video ID for recommendations:</label>
+            <input type="text" id="video_id" name="video_id" required>
+            
+            <label for="top_n">Number of Recommendations:</label>
+            <input type="number" id="top_n" name="top_n" min="1" value="5">
+            
+            <button type="submit">Get Recommendations</button>
         </form>
-        
-        <div class="results">
-            <h2>Recommendations:</h2>
-            <table id="results-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Views</th>
-                        <th>Likes</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Recommendations will be inserted here by JavaScript -->
-                </tbody>
-            </table>
+
+        <div id="recommendations">
+            <!-- Recommendations will be displayed here -->
         </div>
     </div>
+
     <script>
         document.getElementById('recommendation-form').addEventListener('submit', function(event) {
             event.preventDefault();
             
+            const videoIds = document.getElementById('video_ids').value.split(',').map(id => id.trim());
             const videoId = document.getElementById('video_id').value;
-            fetch(`/recommend?video_id=${videoId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const tableBody = document.getElementById('results-table').getElementsByTagName('tbody')[0];
-                    tableBody.innerHTML = '';  // Clear previous results
+            const topN = document.getElementById('top_n').value;
 
-                    data.forEach(video => {
-                        const row = tableBody.insertRow();
-                        row.insertCell(0).textContent = video.title;
-                        row.insertCell(1).textContent = video.description;
-                        row.insertCell(2).textContent = video.view_count;
-                        row.insertCell(3).textContent = video.like_count;
-                        row.insertCell(4).textContent = video.comment_count;
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    video_ids: videoIds,
+                    video_id: videoId,
+                    top_n: parseInt(topN)
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const recommendationsDiv = document.getElementById('recommendations');
+                recommendationsDiv.innerHTML = '';
+                
+                if (data.length === 0) {
+                    recommendationsDiv.innerHTML = '<p>No recommendations found.</p>';
+                } else {
+                    const list = document.createElement('ul');
+                    data.forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${item.title} (ID: ${item.video_id}) - Similarity Score: ${item.similarity_score.toFixed(2)}`;
+                        list.appendChild(listItem);
                     });
-                })
-                .catch(error => console.error('Error fetching recommendations:', error));
+                    recommendationsDiv.appendChild(list);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         });
     </script>
 </body>

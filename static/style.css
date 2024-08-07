@@ -1,5 +1,4 @@
-/* Basic styles for the recommendation system */
-
+/* style.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,66 +7,60 @@ body {
 }
 
 .container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-header {
-    background: #333;
-    color: #fff;
-    padding: 10px 0;
+h1 {
     text-align: center;
-}
-
-header h1 {
-    margin: 0;
+    color: #333;
 }
 
 form {
-    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
 }
 
-input[type="text"] {
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, button {
+    margin-top: 5px;
     padding: 10px;
-    width: calc(100% - 22px);
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    font-size: 16px;
 }
 
-input[type="submit"] {
-    background: #333;
-    color: #fff;
-    border: 0;
-    padding: 10px 20px;
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
     cursor: pointer;
-    border-radius: 4px;
 }
 
-input[type="submit"]:hover {
-    background: #555;
+button:hover {
+    background-color: #0056b3;
 }
 
-.results {
-    margin: 20px 0;
+#recommendations {
+    margin-top: 20px;
 }
 
-.results table {
-    width: 100%;
-    border-collapse: collapse;
+ul {
+    list-style: none;
+    padding: 0;
 }
 
-.results table, .results th, .results td {
-    border: 1px solid #ddd;
+li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
-.results th, .results td {
-    padding: 8px;
-    text-align: left;
-}
-
-.results th {
-    background: #333;
-    color: #fff;
+li:last-child {
+    border-bottom: none;
 }

@@ -3,6 +3,7 @@ import pandas as pd
 from src.recommender import Recommender
 from src.youtube_api import YouTubeAPI
 from src.data_preprocessor import DataPreprocessor
+from utils.helpers import get_top_recommendations
 import os
 import sys
 
@@ -27,7 +28,6 @@ def remove_duplicates(recommendations):
             unique_recommendations.append(rec)
     return unique_recommendations
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -51,11 +51,24 @@ def recommend():
     recommendations = recommender.get_recommendations(video_id, top_n)
     
     recommendations = remove_duplicates(recommendations)
-
-    return jsonify(recommendations)
+    
+    top_recommendations = get_top_recommendations(recommendations, top_n)
+    
+    return jsonify(top_recommendations)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

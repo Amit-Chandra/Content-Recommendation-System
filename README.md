@@ -1,4 +1,3 @@
-```markdown
 # Content Recommendation System using YouTube API
 
 ## Overview

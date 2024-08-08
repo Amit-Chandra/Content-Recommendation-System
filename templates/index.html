@@ -4,6 +4,340 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Recommendations</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+     <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        .heading {
+            color: #d52dab;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #recommendationForm {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 80%;
+            max-width: 400px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 4px 20px;
+            font-size: 1.2em;
+            color: #fff;
+            /* background-color: #007BFF; */
+            background-color: #11dfc8;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #loading {
+            margin-top: 20px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table.dataTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.dataTable th, table.dataTable td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table.dataTable th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            input[type="text"] {
+                width: 100%;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+
+     </style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="heading-box">
+            <h1 class="heading">YouTube Recommendations</h1>
+        </div>
+        <form id="recommendationForm" action="/recommend" method="get" class="recommendation-form">
+            <label for="video_id">Enter YouTube Video ID:</label>
+            <input type="text" id="video_id" name="video_id" placeholder="e.g., q6kJ71tEYqM" required>
+            <button type="submit" id="getRecommendationsBtn">Get Recommendations</button>
+        </form>
+
+        <div id="loading" class="loading" style="display: none;">
+            <img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading...">
+        </div>
+
+        {% if recommendations %}
+        <div class="table-container">
+            <table id="recommendationsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Video ID</th>
+                        <th>Similarity Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recommendation in recommendations %}
+                    <tr>
+                        <td>{{ recommendation.title }}</td>
+                        <td>{{ recommendation.video_id }}</td>
+                        <td>{{ recommendation.similarity_score }}</td>
+                        <td>
+                            <a href="https://www.youtube.com/watch?v={{ recommendation.video_id }}" target="_blank">
+                                <button type="button" class="view-button">View</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#recommendationsTable').DataTable();
+
+            $('#recommendationForm').on('submit', function() {
+                $('#loading').show();
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">YouTube Recommendations</h1>
+        <form id="recommendationForm" action="/recommend" method="get">
+            <label for="video_id">Enter YouTube Video ID:</label>
+            <input type="text" id="video_id" name="video_id" required>
+            <button type="submit" id="getRecommendationsBtn">Get Recommendations</button>
+        </form>
+
+        <div id="loading" style="display: none;">
+            <img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading...">
+        </div>
+
+        {% if recommendations %}
+        <div class="table-container">
+            <table id="recommendationsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Video ID</th>
+                        <th>Similarity Score</th>
+                        <th>Action</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recommendation in recommendations %}
+                    <tr>
+                        <td>{{ recommendation.title }}</td>
+                        <td>{{ recommendation.video_id }}</td>
+                        <td>{{ recommendation.similarity_score }}</td>
+                        <td>
+                            <a href="https://www.youtube.com/watch?v={{ recommendation.video_id }}" target="_blank">
+                                <button type="button">View</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#recommendationsTable').DataTable();
+
+            $('#recommendationForm').on('submit', function() {
+                $('#loading').show();
+            });
+        });
+    </script>
+</body>
+</html>
+
+ -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Recommendations</h1>
+        <form id="recommendationForm" action="/recommend" method="get">
+            <label for="video_id">Enter YouTube Video ID:</label>
+            <input type="text" id="video_id" name="video_id" required>
+            <button type="submit" id="getRecommendationsBtn">Get Recommendations</button>
+        </form>
+
+        <div id="loading" style="display: none;">
+            <img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading...">
+        </div>
+
+        {% if recommendations %}
+        <div class="table-container">
+            <table id="recommendationsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Video ID</th>
+                        <th>Similarity Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recommendation in recommendations %}
+                    <tr>
+                        <td>{{ recommendation.title }}</td>
+                        <td>{{ recommendation.video_id }}</td>
+                        <td>{{ recommendation.similarity_score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#recommendationsTable').DataTable();
+
+            $('#recommendationForm').on('submit', function() {
+                $('#loading').show();
+            });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Recommendations</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -41,6 +375,19 @@
     </script>
 </body>
 </html>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

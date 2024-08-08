@@ -14,17 +14,6 @@ def index():
             return redirect(url_for('recommend', video_id=video_id))
     return render_template('index.html')
 
-<<<<<<< main
-@app.route('/recommend')
-def recommend():
-    video_id = request.args.get('video_id')  # Get the video ID from the query parameters
-    if not video_id:
-        return redirect(url_for('index'))  # Redirect to index if no video ID is provided
-
-    youtube = get_youtube_client()
-    youtube_recommendations = get_related_videos(youtube, video_id)
-
-=======
 
 
 @app.route('/recommend')
@@ -37,7 +26,7 @@ def recommend():
         if 'similarity_score' not in rec or rec['similarity_score'] is None:
             rec['similarity_score'] = 0  
     
->>>>>>> local
+
     return render_template('index.html', recommendations=youtube_recommendations)
 
 if __name__ == '__main__':

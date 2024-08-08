@@ -3,6 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>YouTube Recommendations</h1>
+    <form method="POST" action="/">
+        <label for="video_id">Enter Video ID:</label>
+        <input type="text" id="video_id" name="video_id" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+    {% if recommendations %}
+        <ul>
+            {% for rec in recommendations %}
+                <li>
+                    {{ rec['title'] }} (ID: {{ rec['video_id'] }}) - 
+                    Similarity Score: {{ rec['similarity_score']|default(0)|round(2) }}
+                </li>
+            {% else %}
+                <li>No recommendations available.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!-- templates/index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Content Recommendation System</h1>
+        <form action="/recommend" method="post">
+            <input type="text" name="video_id" placeholder="Enter YouTube video ID" required>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        {% if recommendations %}
+        <h2>Recommended Videos:</h2>
+        <ul>
+            {% for rec in recommendations %}
+            <li>
+                {{ rec['title'] }} (ID: {{ rec['video_id'] }}) - Similarity Score: {{ rec['similarity_score']|round(2) }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Recommendation System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -69,4 +150,4 @@
         });
     </script>
 </body>
-</html>
+</html> -->

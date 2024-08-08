@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+<<<<<<< main
     <h1>YouTube Recommendations</h1>
     <form method="POST" action="/">
         <label for="video_id">Enter Video ID:</label>
@@ -151,3 +152,40 @@
     </script>
 </body>
 </html> -->
+=======
+    <div class="container">
+        <h1>YouTube Recommendations</h1>
+        <form action="/recommend" method="get">
+            <label for="video_id">Enter YouTube Video ID:</label>
+            <input type="text" id="video_id" name="video_id" placeholder="e.g., q6kJ71tEYqM" required>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        <div id="loading" style="display:none;">
+            <p>Loading...</p>
+            <div class="spinner"></div>
+        </div>
+
+        <ul>
+            {% for rec in recommendations %}
+                <li>
+                    <div class="video-info">
+                        <a href="https://www.youtube.com/watch?v={{ rec['video_id'] }}" target="_blank">
+                            {{ rec['title'] }}
+                        </a>
+                        <span>Similarity Score: {{ rec['similarity_score']|round(2) }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+
+>>>>>>> local
